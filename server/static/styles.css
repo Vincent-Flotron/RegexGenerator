@@ -1,3 +1,189 @@
 #rw_new_row {
     height: 30px; /* Adjust the height as needed */
 }
+
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 0.75rem; /* Base font size for mobile */
+}
+
+header button {
+    margin-right: 20px;
+}
+
+button {
+    background-color: #555;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    height: 20px;
+}
+
+button:hover {
+    background-color: #777;
+}
+
+main {
+    padding: 70px 20px 20px;
+    margin-bottom: 60px;
+}
+
+.label-left {
+    width: 100px;
+    display: inline-block;
+    text-align: right;
+}
+
+.reg-settings {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: flex-end; */
+}
+
+.regex-viewer, .regex-settings {
+    border-top: 1px solid #ddd;
+    margin-top: 5px;
+    padding-top: 5px;
+}
+
+.cont-but {
+    width: 200px;
+}
+
+input, textarea {
+    width: 100%;
+}
+
+#articles {
+    margin-top: 20px;
+}
+
+article {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+article h2 {
+    margin-top: 0;
+    font-size: 0.9rem;
+}
+
+table, label, button {
+    font-size: 0.6rem;
+}
+
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    font-size: 0.6rem;
+}
+
+.dark-theme {
+    background-color: #222;
+    color: #fff;
+}
+
+@media only screen and (min-width: 400px) {
+    /* Tablet and desktop styles */
+    header h1 {
+        font-size: 1rem; /* Increase font size for larger screens */
+    }
+
+    main {
+        padding: 70px 30px 20px; /* Adjust top padding for larger screens */
+    }
+
+    .label-left {
+        width: 120px;
+        display: inline-block;
+        text-align: right;
+        margin-right: 5px;
+    }
+
+    .cont-but {
+        width: 230px;
+    }
+
+    button {
+        height: 25px;
+    }
+
+    footer p {
+        font-size: 0.75rem;
+    }
+
+    table, label, button {
+        font-size: 0.75rem;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    /* Tablet and desktop styles */
+    header h1 {
+        font-size: 2rem; /* Increase font size for larger screens */
+    }
+
+    main {
+        padding: 70px 40px 20px; /* Adjust top padding for larger screens */
+    }
+
+    .label-left {
+        width: 150px;
+        display: inline-block;
+        text-align: right;
+    }
+
+    .cont-but {
+        width: 300px;
+    }
+
+    button {
+        height: 25px;
+        margin-left: 5px;
+    }
+
+    input, textarea {
+        width: 490px;
+    }
+
+    table, label, button {
+        font-size: 1rem;
+    }
+
+    footer p {
+        font-size: 1rem;
+    }
+}

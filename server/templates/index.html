@@ -10,44 +10,67 @@
 
 </head>
 <body>
-    <label for="tb_text">Text:</label>
-    <input type="text" id="tb_text" name="tb_text">
-    <button onclick="extract()">Extract</button>
+    <header>
+        <h1>Your Company Name</h1>
+        <button id="themeToggle">Toggle Theme</button>
+    </header>
 
-    <table id="tb_pattern" border="1">
-        <tr>
-            <th>Position</th>
-            <th>Type</th>
-            <th>Name</th>
-            <th>Separator</th>
-            <th>Length</th>
-        </tr>
-        <!-- Add rows dynamically using JavaScript -->
-        <tr id="rw_new_row">
-            <td contenteditable="true" data-placeholder="Position"></td>
-            <td contenteditable="true" data-placeholder="Type"></td>
-            <td contenteditable="true" data-placeholder="Name"></td>
-            <td contenteditable="true" data-placeholder="Separator"></td>
-            <td contenteditable="true" data-placeholder="Length"></td>
-        </tr>
-    </table>
-    <br>
+    <main>
+        <section id="regex-generator">
+            <article>
+                <h2>Regex Generator</h2>
+                <div class="reg-settings">
+                    <label class="label-left" for="tb_text">Text:</label>
+                    <textarea type="text" id="tb_text" name="tb_text" cols="40" rows="2"></textarea>
+                    <button onclick="extract()">Extract</button>
+                </div>
 
-    <label for="tb_pos_to_remove">Position to Remove:</label>
-    <input type="text" id="tb_pos_to_remove" name="tb_pos_to_remove">
-    <button onclick="remove_position()">Remove Position</button>
-    <button id="bt_add_element" onclick="add_element()">Add Element</button>
-    <br>
-    <br>
+                <div class="reg-settings">
+                    <label class="label-left" for="tb_generated_regex">Generated Regex:</label>
+                    <input type="text" id="tb_generated_regex" name="tb_generated_regex">
+                    <button onclick="make_regex()">Generate Regex</button>
+                </div>
 
-    <label for="tb_generated_regex">Generated Regex:</label>
-    <input type="text" id="tb_generated_regex" name="tb_generated_regex">
-    <button onclick="make_regex()">Generate Regex</button>
-    <br>
+                <div class="reg-settings">
+                    <label class="label-left" for="tb_result">Result:</label>
+                    <input type="text" id="tb_result" name="tb_result" readonly>
+                </div>
 
-    <label for="tb_result">Result:</label>
-    <input type="text" id="tb_result" name="tb_result" readonly>
+                <div class="regex-settings">
+                    <div>
+                        <table id="tb_pattern" border="1">
+                            <tr>
+                                <th>Position</th>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Separator</th>
+                                <th>Length</th>
+                            </tr>
+                            <!-- Add rows dynamically using JavaScript -->
+                            <tr id="rw_new_row">
+                                <td contenteditable="true" data-placeholder="Position"></td>
+                                <td contenteditable="true" data-placeholder="Type"></td>
+                                <td contenteditable="true" data-placeholder="Name"></td>
+                                <td contenteditable="true" data-placeholder="Separator"></td>
+                                <td contenteditable="true" data-placeholder="Length"></td>
+                            </tr>
+                        </table>
+                        <button class="auto" id="bt_add_element" onclick="add_element()">Add Element</button>
+                    </div>
 
+                    <div class="reg-settings flex-container" id="pos-to-remove">
+                        <label  class="initial label-left" for="tb_pos_to_remove">Position to Remove:</label>
+                        <input  class="initial" type="text" id="tb_pos_to_remove" name="tb_pos_to_remove">
+                        <button class="auto" onclick="remove_position()">Remove Position</button>
+                    </div>
+                </div>
+
+            </article>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Your Company Name. All rights reserved.</p>
+    </footer>
     <!-- <script src="script.js"></script> -->
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </body>

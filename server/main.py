@@ -18,6 +18,8 @@ def gen_regex(json_data):
         name = item['name']
         separator = item['separator']
         if item['len'] != '':
+            if item['len'] == '':
+              item['len'] = '0'
             length = int(item['len'])
         else:
             length = 0
