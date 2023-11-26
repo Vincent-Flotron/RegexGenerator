@@ -9,7 +9,7 @@
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 
 </head>
-<body>
+<body class="dark-theme">
     <header>
         <h1>Your Company Name</h1>
         <button id="themeToggle">Toggle Theme</button>
@@ -21,19 +21,19 @@
                 <h2>Regex Generator</h2>
                 <div class="reg-settings">
                     <label class="label-left" for="tb_text">Text:</label>
-                    <textarea type="text" id="tb_text" name="tb_text" cols="40" rows="2"></textarea>
+                    <textarea class="textbox dark-theme-textboxes" type="text" id="tb_text" name="tb_text" cols="40" rows="2"></textarea>
                     <button onclick="extract()">Extract</button>
                 </div>
 
                 <div class="reg-settings">
                     <label class="label-left" for="tb_generated_regex">Generated Regex:</label>
-                    <input type="text" id="tb_generated_regex" name="tb_generated_regex">
+                    <input class="textbox dark-theme-textboxes" type="text" id="tb_generated_regex" name="tb_generated_regex">
                     <button onclick="make_regex()">Generate Regex</button>
                 </div>
 
                 <div class="reg-settings">
                     <label class="label-left" for="tb_result">Result:</label>
-                    <input type="text" id="tb_result" name="tb_result" readonly>
+                    <input class="textbox dark-theme-textboxes" type="text" id="tb_result" name="tb_result" readonly>
                 </div>
 
                 <div class="regex-settings">
@@ -49,7 +49,14 @@
                             <!-- Add rows dynamically using JavaScript -->
                             <tr id="rw_new_row">
                                 <td contenteditable="true" data-placeholder="Position"></td>
-                                <td contenteditable="true" data-placeholder="Type"></td>
+                                <td data-placeholder="Type">
+                                    <label for="fruitSelect"></label>
+                                    <select class="dark-theme-select" id="fruitSelect" name="fruits">
+                                      <option value="character">character</option>
+                                      <option value="separator">separator</option>
+                                      <option value="separator_utf8">separator_utf8</option>
+                                    </select>
+                                </td>
                                 <td contenteditable="true" data-placeholder="Name"></td>
                                 <td contenteditable="true" data-placeholder="Separator"></td>
                                 <td contenteditable="true" data-placeholder="Length"></td>
@@ -60,7 +67,7 @@
 
                     <div class="reg-settings flex-container" id="pos-to-remove">
                         <label  class="initial label-left" for="tb_pos_to_remove">Position to Remove:</label>
-                        <input  class="initial" type="text" id="tb_pos_to_remove" name="tb_pos_to_remove">
+                        <input  class="initial textbox dark-theme-textboxes" type="text" id="tb_pos_to_remove" name="tb_pos_to_remove">
                         <button class="auto" onclick="remove_position()">Remove Position</button>
                     </div>
                 </div>

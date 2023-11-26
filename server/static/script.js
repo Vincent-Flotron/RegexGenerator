@@ -5,10 +5,12 @@ function make_regex() {
     var patterns = [];
 
     for (var i = 1; i < patternRows.length - 1; i++) { // Exclude the first and last rows (headers and new row)
+        var select = patternRows[i].getElementsByTagName("select")[0];
         var cells = patternRows[i].cells;
         var pattern = {
             position: cells[0].innerText,
-            type: cells[1].innerText,
+            /* type: cells[1].innerText, */
+            type: select.options[select.selectedIndex].value,
             name: cells[2].innerText,
             separator: cells[3].innerText,
             len: cells[4].innerText
@@ -34,28 +36,97 @@ function make_regex() {
     });
 }
 
+function extract_values_from_rw_new_row(row) {
+    var position = row.cells[0].innerText;
+    var select = row.getElementsByTagName("select")[0];
+    var type = select.options[select.selectedIndex].value;
+    var name = row.cells[2].innerText;
+    var separator = row.cells[3].innerText;
+    var len = row.cells[4].innerText;
+
+    return {position: position,
+            select: select,
+            type: type,
+            name: name,
+            separator: separator,
+            len: len};
+}
+
 function add_element() {
     // Get values from the new row
-    var position = document.getElementById('rw_new_row').cells[0].innerText;
-    var type = document.getElementById('rw_new_row').cells[1].innerText;
-    var name = document.getElementById('rw_new_row').cells[2].innerText;
-    var separator = document.getElementById('rw_new_row').cells[3].innerText;
-    var len = document.getElementById('rw_new_row').cells[4].innerText;
+    var row = document.getElementById('rw_new_row');
+    var extracted = extract_values_from_rw_new_row(row);
+
+    // Prepare the select
+    var select = make_combobox_types(extracted.type);
 
     // Add a new row with the values to tb_pattern
     var patternTable = document.getElementById('tb_pattern');
-    var newRow = patternTable.insertRow(patternTable.rows.length - 1);
-    newRow.innerHTML = '<td>' + position + '</td><td contenteditable="true">' + type + '</td><td contenteditable="true">' + name + '</td><td contenteditable="true">' + separator + '</td><td contenteditable="true">' + len + '</td>';
+    addRowToTable(patternTable, extracted.position, select, extracted.name, extracted.separator, extracted.len);
 
     // Clear the content of the new row
-    document.getElementById('rw_new_row').cells[0].innerText = '';
-    document.getElementById('rw_new_row').cells[1].innerText = '';
-    document.getElementById('rw_new_row').cells[2].innerText = '';
-    document.getElementById('rw_new_row').cells[3].innerText = '';
-    document.getElementById('rw_new_row').cells[4].innerText = '';
+    row = document.getElementById('rw_new_row');
+    clean_row(row);
 
     // Sort the table based on the 'position' column
     sortTable();
+}
+
+function clean_row(row) {
+    row = document.getElementById('rw_new_row');
+    var newSelect = make_combobox_types();
+    row.cells[0].innerText = '';
+    row.cells[1].innerHTML = '';
+    row.cells[1].appendChild(newSelect);
+    row.cells[2].innerText = '';
+    row.cells[3].innerText = '';
+    row.cells[4].innerText = '';
+}
+
+ 
+function addRowToTable(table, position, select, name, separator, len) {
+    // Add the row
+    var row = table.insertRow(table.rows.length - 1);
+
+    // Create and set the first cell (position)
+    var positionCell = row.insertCell(0);
+    positionCell.textContent = position;
+
+    // Create and set the second cell (select element)
+    var selectCell = row.insertCell(1);
+    selectCell.appendChild(select);
+
+    // Create and set the third cell (name)
+    var nameCell = row.insertCell(2);
+    nameCell.contentEditable = true;
+    nameCell.textContent = name;
+
+    // Create and set the fourth cell (separator)
+    var separatorCell = row.insertCell(3);
+    separatorCell.contentEditable = true;
+    separatorCell.textContent = separator;
+
+    // Create and set the fifth cell (length)
+    var lenCell = row.insertCell(4);
+    lenCell.contentEditable = true;
+    lenCell.textContent = len;
+}
+
+function make_combobox_types (activated_option = '') {
+    var newSelect = document.createElement("select");
+    newSelect.name = "type";
+    newSelect.className = "dark-theme-select";
+    var options = ["character", "separator", "separator_utf8"];
+    for (var j = 0; j < options.length; j++) {
+        var option = document.createElement("option");
+        option.value = options[j];
+        option.text = options[j];
+        if (options[j] === activated_option) {
+          option.selected = true;
+        }
+        newSelect.add(option);
+    }
+    return newSelect
 }
 
 function remove_position() {
@@ -114,7 +185,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
 
+    let textboxes = document.getElementsByClassName('textbox');
+
     themeToggle.addEventListener('click', function () {
         body.classList.toggle('dark-theme');
+        
+        for( let i = 0; i < textboxes.length; i++ ){
+            textboxes[i].classList.toggle('dark-theme-textboxes');
+        }
+        
     });
 });

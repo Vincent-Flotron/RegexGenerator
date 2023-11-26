@@ -116,6 +116,17 @@ footer p {
     color: #fff;
 }
 
+.dark-theme-textboxes {
+    background-color: #333333;
+}
+
+.dark-theme-select {
+    background-color: #222222;
+    border-radius: 0%;
+    border: unset;
+    color: #fff;
+}
+
 @media only screen and (min-width: 400px) {
     /* Tablet and desktop styles */
     header h1 {
