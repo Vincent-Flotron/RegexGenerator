@@ -180,19 +180,70 @@ function sortTable() {
     }
 }
 
+function generate_named_groups_result(namedGroups) {
+    // Get the div where generated code will be added
+    var containerDiv = document.getElementById('named-groups-container');
+
+    for (var i = 1; i <= namedGroups.length; i++) {
+        // Create div element
+        var newDiv = document.createElement('div');
+
+        // Create label element
+        var label = document.createElement('label');
+        label.className = 'label-left';
+        label.setAttribute('for', 'tb_named_group_' + i);
+        label.innerText = 'Named Group ' + i + ':';
+
+        // Create inner div element
+        var innerDiv = document.createElement('div');
+        innerDiv.className = 'reg-settings';
+
+        // Create input element
+        var input = document.createElement('input');
+        input.className = 'textbox dark-theme-textboxes';
+        input.type = 'text';
+        input.id = 'tb_named_group_' + i;
+        input.name = 'tb_named_group_' + i;
+        input.setAttribute('readonly', '');
+
+        // Append label, input, and inner div to new div
+        innerDiv.appendChild(input);
+        newDiv.appendChild(label);
+        newDiv.appendChild(innerDiv);
+
+        // Append new div to container div
+        containerDiv.appendChild(newDiv);
+    }
+}
+
 // Function to toggle the theme
 document.addEventListener('DOMContentLoaded', function () {
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
 
-    let textboxes = document.getElementsByClassName('textbox');
+    generate_named_groups_result(2);
 
     themeToggle.addEventListener('click', function () {
+        // set general dark-theme
         body.classList.toggle('dark-theme');
         
-        for( let i = 0; i < textboxes.length; i++ ){
+        // set text boxes dark-theme
+        var textboxes = document.getElementsByClassName('textbox');
+        for( var i = 0; i < textboxes.length; i++ ){
             textboxes[i].classList.toggle('dark-theme-textboxes');
         }
         
+        // set selects dark-theme
+        var selects = document.getElementsByTagName('select');
+        for( var i = 0; i < selects.length; i++ ){
+            selects[i].classList.toggle('dark-theme-select');
+        }
+
+        // set buttons dark-theme
+        var buttons = document.getElementsByTagName('button');
+        for( var i = 0; i < buttons.length; i++ ){
+            buttons[i].classList.toggle('dark-theme');
+        }
+
     });
 });

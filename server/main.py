@@ -56,7 +56,6 @@ def generate_regex():
     # Add your regex generation logic here
     print(data)
 
-    # generated_regex = '^'  # Example: You can modify this based on your actual logic
     generated_regex = gen_regex(data)
 
     response_data = {'generated_regex': generated_regex}

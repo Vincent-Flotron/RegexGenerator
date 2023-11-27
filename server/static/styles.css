@@ -33,12 +33,20 @@ header button {
 }
 
 button {
-    background-color: #555;
-    color: #fff;
+    background-color: #ebebeb;
     padding: 5px 10px;
     border: none;
     cursor: pointer;
     height: 20px;
+}
+
+button.dark-theme {
+    background-color: #555;
+    color: #fff;
+}
+
+select {
+    background-color: #ebebeb;
 }
 
 button:hover {
@@ -53,13 +61,14 @@ main {
 .label-left {
     width: 100px;
     display: inline-block;
-    text-align: right;
+    text-align: left;
 }
 
 .reg-settings {
     display: flex;
     flex-wrap: wrap;
     /* justify-content: flex-end; */
+    padding-bottom: 10px;
 }
 
 .regex-viewer, .regex-settings {
@@ -68,8 +77,12 @@ main {
     padding-top: 5px;
 }
 
+.regex-settings {
+    padding-top: 10px;
+}
+
 .cont-but {
-    width: 200px;
+    width: 110px;
 }
 
 input, textarea {
@@ -118,6 +131,7 @@ footer p {
 
 .dark-theme-textboxes {
     background-color: #333333;
+    color: #fff;
 }
 
 .dark-theme-select {
@@ -140,7 +154,6 @@ footer p {
     .label-left {
         width: 120px;
         display: inline-block;
-        text-align: right;
         margin-right: 5px;
     }
 
@@ -174,11 +187,10 @@ footer p {
     .label-left {
         width: 150px;
         display: inline-block;
-        text-align: right;
     }
 
     .cont-but {
-        width: 300px;
+        width: 175px;
     }
 
     button {
@@ -197,4 +209,10 @@ footer p {
     footer p {
         font-size: 1rem;
     }
+
+    /* @media only screen and (min-width: 756px) {
+        .label-left {
+            text-align: right;
+        }
+    }     */
 }

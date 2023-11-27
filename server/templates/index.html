@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regex Generator</title>
+    <title>Apps</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 
 </head>
 <body class="dark-theme">
     <header>
-        <h1>Your Company Name</h1>
+        <h1>Apps</h1>
         <button id="themeToggle">Toggle Theme</button>
     </header>
 
@@ -19,56 +19,77 @@
         <section id="regex-generator">
             <article>
                 <h2>Regex Generator</h2>
-                <div class="reg-settings">
+                <div>
                     <label class="label-left" for="tb_text">Text:</label>
-                    <textarea class="textbox dark-theme-textboxes" type="text" id="tb_text" name="tb_text" cols="40" rows="2"></textarea>
-                    <button onclick="extract()">Extract</button>
+                    <div class="reg-settings">
+                        <textarea class="textbox dark-theme-textboxes" type="text" id="tb_text" name="tb_text" cols="40" rows="2"></textarea>
+                        <div class="cont-but">
+                            <button class="dark-theme" onclick="extract()">Extract</button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="reg-settings">
+                <div>
                     <label class="label-left" for="tb_generated_regex">Generated Regex:</label>
-                    <input class="textbox dark-theme-textboxes" type="text" id="tb_generated_regex" name="tb_generated_regex">
-                    <button onclick="make_regex()">Generate Regex</button>
+                    <div class="reg-settings">
+                        <input class="textbox dark-theme-textboxes" type="text" id="tb_generated_regex" name="tb_generated_regex">
+                        <div class="cont-but">
+                            <button class="dark-theme" onclick="make_regex()">Generate Regex</button>
+                        </div>
+                    </div>
                 </div>
+                   
+                <div id="named-groups-container">
 
-                <div class="reg-settings">
-                    <label class="label-left" for="tb_result">Result:</label>
-                    <input class="textbox dark-theme-textboxes" type="text" id="tb_result" name="tb_result" readonly>
                 </div>
+                <!-- <div>    
+                    <label class="label-left" for="tb_named_group_1">Named Group 1:</label>
+                    <div class="reg-settings">
+                        <input class="textbox dark-theme-textboxes" type="text" id="tb_named_group_1" name="tb_named_group_1" readonly>
+                    </div>
+                </div> -->
 
                 <div class="regex-settings">
-                    <div>
-                        <table id="tb_pattern" border="1">
-                            <tr>
-                                <th>Position</th>
-                                <th>Type</th>
-                                <th>Name</th>
-                                <th>Separator</th>
-                                <th>Length</th>
-                            </tr>
-                            <!-- Add rows dynamically using JavaScript -->
-                            <tr id="rw_new_row">
-                                <td contenteditable="true" data-placeholder="Position"></td>
-                                <td data-placeholder="Type">
-                                    <label for="fruitSelect"></label>
-                                    <select class="dark-theme-select" id="fruitSelect" name="fruits">
-                                      <option value="character">character</option>
-                                      <option value="separator">separator</option>
-                                      <option value="separator_utf8">separator_utf8</option>
-                                    </select>
-                                </td>
-                                <td contenteditable="true" data-placeholder="Name"></td>
-                                <td contenteditable="true" data-placeholder="Separator"></td>
-                                <td contenteditable="true" data-placeholder="Length"></td>
-                            </tr>
-                        </table>
-                        <button class="auto" id="bt_add_element" onclick="add_element()">Add Element</button>
+                    <table id="tb_pattern" border="1">
+                        <tr>
+                            <th>Position</th>
+                            <th>Type</th>
+                            <th>Name</th>
+                            <th>Separator</th>
+                            <th>Length</th>
+                        </tr>
+                        <!-- Add rows dynamically using JavaScript -->
+                        <tr id="rw_new_row">
+                            <td contenteditable="true" data-placeholder="Position"></td>
+                            <td data-placeholder="Type">
+                                <label for="fruitSelect"></label>
+                                <select class="dark-theme-select" id="fruitSelect" name="fruits">
+                                    <option value="character">character</option>
+                                    <option value="separator">separator</option>
+                                    <option value="separator_utf8">separator_utf8</option>
+                                </select>
+                            </td>
+                            <td contenteditable="true" data-placeholder="Name"></td>
+                            <td contenteditable="true" data-placeholder="Separator"></td>
+                            <td contenteditable="true" data-placeholder="Length"></td>
+                        </tr>
+                    </table>
+                    <div class="reg-settings">
+                        <div class="cont-but">
+                            <button class="auto dark-theme" id="bt_add_element" onclick="add_element()">Add Element</button>
+                        </div>
                     </div>
 
-                    <div class="reg-settings flex-container" id="pos-to-remove">
-                        <label  class="initial label-left" for="tb_pos_to_remove">Position to Remove:</label>
-                        <input  class="initial textbox dark-theme-textboxes" type="text" id="tb_pos_to_remove" name="tb_pos_to_remove">
-                        <button class="auto" onclick="remove_position()">Remove Position</button>
+                    <div>
+                        <label class="initial label-left" for="tb_pos_to_remove">Position to Remove:</label>
+                        <div class="reg-settings">
+                            <div class="reg-settings flex-container" id="pos-to-remove">
+                                <input  class="initial textbox dark-theme-textboxes" type="text" id="tb_pos_to_remove" name="tb_pos_to_remove">
+                                <div class="cont-but">
+                                    <button class="auto dark-theme" onclick="remove_position()">Remove Position</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
