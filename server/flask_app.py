@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify
 from scripts.regexGenerator import *
-import subprocess
 
 
 app = Flask(__name__)
@@ -31,4 +30,3 @@ def generate_regex():
 
     response_data = {'generated_regex': generated_regex}
     return jsonify(response_data)
-

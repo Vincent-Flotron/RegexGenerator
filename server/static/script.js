@@ -37,7 +37,8 @@ function make_regex() {
     }
 
     // Send a POST request to the Python server with the pattern data
-    fetch('http://127.0.0.1:5000/generate_regex', {
+    // fetch('http://127.0.0.1:5000/generate_regex', {
+    fetch('http://just4coding.pythonanywhere.com/generate_regex', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
