@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from scripts.regexGenerator import *
+import subprocess
 # import json
 
 
@@ -60,6 +61,20 @@ def generate_regex():
 
     response_data = {'generated_regex': generated_regex}
     return jsonify(response_data)
+
+def bash(bash_command):
+
+    # Run the Bash command
+    result = subprocess.run(bash_command, shell=True, check=True, text=True)
+
+    print(result)
+    # Access the output and return code
+    output = result.stdout
+    return_code = result.returncode
+
+    # Print the output and return code
+    print(f'Output:\n{output}')
+    print(f'Return Code: {return_code}')
 
 if __name__ == '__main__':
     app.run(debug=True)

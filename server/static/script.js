@@ -1,12 +1,30 @@
+class RegMatch {
+    constructor(name, value) {
+      this._name = name;
+      this._value = value;
+    }
+  
+    // Accessor for the 'name' property
+    get name() {
+      return this._name;
+    }
+  
+    // Accessor for the 'value' property
+    get value() {
+      return this._value;
+    }
+}
+
+
 function make_regex() {
     // Read and serialize tb_pattern
-    var patternTable = document.getElementById('tb_pattern');
-    var patternRows = patternTable.rows;
+    var pattern_table = document.getElementById('tb_pattern');
+    var pattern_rows = pattern_table.rows;
     var patterns = [];
 
-    for (var i = 1; i < patternRows.length - 1; i++) { // Exclude the first and last rows (headers and new row)
-        var select = patternRows[i].getElementsByTagName("select")[0];
-        var cells = patternRows[i].cells;
+    for (var i = 1; i < pattern_rows.length - 1; i++) { // Exclude the first and last rows (headers and new row)
+        var select = pattern_rows[i].getElementsByTagName("select")[0];
+        var cells = pattern_rows[i].cells;
         var pattern = {
             position: cells[0].innerText,
             /* type: cells[1].innerText, */
@@ -61,8 +79,8 @@ function add_element() {
     var select = make_combobox_types(extracted.type);
 
     // Add a new row with the values to tb_pattern
-    var patternTable = document.getElementById('tb_pattern');
-    addRowToTable(patternTable, extracted.position, select, extracted.name, extracted.separator, extracted.len);
+    var pattern_table = document.getElementById('tb_pattern');
+    addRowToTable(pattern_table, extracted.position, select, extracted.name, extracted.separator, extracted.len);
 
     // Clear the content of the new row
     row = document.getElementById('rw_new_row');
@@ -74,10 +92,10 @@ function add_element() {
 
 function clean_row(row) {
     row = document.getElementById('rw_new_row');
-    var newSelect = make_combobox_types();
+    var new_select = make_combobox_types();
     row.cells[0].innerText = '';
     row.cells[1].innerHTML = '';
-    row.cells[1].appendChild(newSelect);
+    row.cells[1].appendChild(new_select);
     row.cells[2].innerText = '';
     row.cells[3].innerText = '';
     row.cells[4].innerText = '';
@@ -89,33 +107,33 @@ function addRowToTable(table, position, select, name, separator, len) {
     var row = table.insertRow(table.rows.length - 1);
 
     // Create and set the first cell (position)
-    var positionCell = row.insertCell(0);
-    positionCell.textContent = position;
+    var position_cell = row.insertCell(0);
+    position_cell.textContent = position;
 
     // Create and set the second cell (select element)
-    var selectCell = row.insertCell(1);
-    selectCell.appendChild(select);
+    var select_cell = row.insertCell(1);
+    select_cell.appendChild(select);
 
     // Create and set the third cell (name)
-    var nameCell = row.insertCell(2);
-    nameCell.contentEditable = true;
-    nameCell.textContent = name;
+    var name_cell = row.insertCell(2);
+    name_cell.contentEditable = true;
+    name_cell.textContent = name;
 
     // Create and set the fourth cell (separator)
-    var separatorCell = row.insertCell(3);
-    separatorCell.contentEditable = true;
-    separatorCell.textContent = separator;
+    var separator_cell = row.insertCell(3);
+    separator_cell.contentEditable = true;
+    separator_cell.textContent = separator;
 
     // Create and set the fifth cell (length)
-    var lenCell = row.insertCell(4);
-    lenCell.contentEditable = true;
-    lenCell.textContent = len;
+    var len_cell = row.insertCell(4);
+    len_cell.contentEditable = true;
+    len_cell.textContent = len;
 }
 
 function make_combobox_types (activated_option = '') {
-    var newSelect = document.createElement("select");
-    newSelect.name = "type";
-    newSelect.className = "dark-theme-select";
+    var new_select = document.createElement("select");
+    new_select.name = "type";
+    new_select.className = "dark-theme-select";
     var options = ["character", "separator", "separator_utf8"];
     for (var j = 0; j < options.length; j++) {
         var option = document.createElement("option");
@@ -124,19 +142,19 @@ function make_combobox_types (activated_option = '') {
         if (options[j] === activated_option) {
           option.selected = true;
         }
-        newSelect.add(option);
+        new_select.add(option);
     }
-    return newSelect
+    return new_select
 }
 
 function remove_position() {
-    var positionToRemove = document.getElementById('tb_pos_to_remove').value;
+    var position_to_remove = document.getElementById('tb_pos_to_remove').value;
 
     // Remove the row with the specified position from tb_pattern
-    var patternTable = document.getElementById('tb_pattern');
-    for (var i = 1; i < patternTable.rows.length - 1; i++) {
-        if (patternTable.rows[i].cells[0].innerText === positionToRemove) {
-            patternTable.deleteRow(i);
+    var pattern_table = document.getElementById('tb_pattern');
+    for (var i = 1; i < pattern_table.rows.length - 1; i++) {
+        if (pattern_table.rows[i].cells[0].innerText === position_to_remove) {
+            pattern_table.deleteRow(i);
             break;
         }
     }
@@ -144,86 +162,118 @@ function remove_position() {
 
 function extract() {
     // Get the regex from tb_generated_regex
-    var regex = document.getElementById('tb_generated_regex').value;
+    var pattern = document.getElementById('tb_generated_regex').value;
 
     // Apply the regex to tb_text and display the result in tb_result
     var text = document.getElementById('tb_text').value;
-    var result = text.match(new RegExp(regex));
-    document.getElementById('tb_result').value = result ? result[0] : 'No match found';
+
+    const regex = new RegExp(pattern);
+    const matches = regex.exec(text);
+
+    if (matches) {
+        named_groups = extract_named_groups(matches);
+        clean_named_groups_result();
+        generate_named_groups_result(named_groups);
+    } else {
+        console.log('No match found');
+    }
+}
+
+function extract_named_groups(matches) {
+    const groups_names = Object.keys(matches.groups); // Get an array of named group names
+    const groups_values = groups_names.map(group_name => matches.groups[group_name]); // Get an array of named group values
+    named_groups = [];
+
+    for(var i = 0; i < groups_names.length; i++){
+        named_groups.push(new RegMatch(groups_names[i], groups_values[i]));
+    }
+
+    return named_groups;
+}
+
+function clean_named_groups_result() {
+    // Get the div where generated code will be added
+    var container_div = document.getElementById('named-groups-container');
+    container_div.innerHTML = '';
+}
+
+function get_named_groups_from_regex() {
+
 }
 
 // Function to sort the table based on the 'position' column
 function sortTable() {
-    var patternTable = document.getElementById('tb_pattern');
-    var rows, switching, i, x, y, shouldSwitch;
+    var pattern_table = document.getElementById('tb_pattern');
+    var rows, switching, i, x, y, should_switch;
     switching = true;
     
     while (switching) {
         switching = false;
-        rows = patternTable.rows;
+        rows = pattern_table.rows;
         
         for (i = 1; i < rows.length - 2; i++) {
-            shouldSwitch = false;
+            should_switch = false;
             x = parseInt(rows[i].cells[0].innerText);
             y = parseInt(rows[i + 1].cells[0].innerText);
             
             if (x > y) {
-                shouldSwitch = true;
+                should_switch = true;
                 break;
             }
         }
         
-        if (shouldSwitch) {
+        if (should_switch) {
             rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
             switching = true;
         }
     }
 }
 
-function generate_named_groups_result(namedGroups) {
+function generate_named_groups_result(named_groups) {
     // Get the div where generated code will be added
-    var containerDiv = document.getElementById('named-groups-container');
+    var container_div = document.getElementById('named-groups-container');
 
-    for (var i = 1; i <= namedGroups.length; i++) {
+    for (var i = 0; i < named_groups.length; i++) {
         // Create div element
-        var newDiv = document.createElement('div');
+        var new_div = document.createElement('div');
 
         // Create label element
         var label = document.createElement('label');
         label.className = 'label-left';
-        label.setAttribute('for', 'tb_named_group_' + i);
-        label.innerText = 'Named Group ' + i + ':';
+        label.setAttribute('for', named_groups[i].name);
+        label.innerText = named_groups[i].name + ':';
 
         // Create inner div element
-        var innerDiv = document.createElement('div');
-        innerDiv.className = 'reg-settings';
+        var inner_div = document.createElement('div');
+        inner_div.className = 'reg-settings';
 
         // Create input element
         var input = document.createElement('input');
         input.className = 'textbox dark-theme-textboxes';
         input.type = 'text';
-        input.id = 'tb_named_group_' + i;
-        input.name = 'tb_named_group_' + i;
+        input.id = named_groups[i].name;
+        input.name = named_groups[i].name;
         input.setAttribute('readonly', '');
+        input.value = named_groups[i].value;
 
         // Append label, input, and inner div to new div
-        innerDiv.appendChild(input);
-        newDiv.appendChild(label);
-        newDiv.appendChild(innerDiv);
+        inner_div.appendChild(input);
+        new_div.appendChild(label);
+        new_div.appendChild(inner_div);
 
         // Append new div to container div
-        containerDiv.appendChild(newDiv);
+        container_div.appendChild(new_div);
     }
 }
 
 // Function to toggle the theme
 document.addEventListener('DOMContentLoaded', function () {
-    const themeToggle = document.getElementById('themeToggle');
+    const theme_toggle = document.getElementById('theme_toggle');
     const body = document.body;
 
-    generate_named_groups_result(2);
+    // generate_named_groups_result(['grp1', 'grp2']);
 
-    themeToggle.addEventListener('click', function () {
+    theme_toggle.addEventListener('click', function () {
         // set general dark-theme
         body.classList.toggle('dark-theme');
         

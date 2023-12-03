@@ -18,7 +18,7 @@
     <main>
         <section id="regex-generator">
             <article>
-                <h2>Regex Generator</h2>
+                <h1>Regex Generator</h1>
                 <div>
                     <label class="label-left" for="tb_text">Text:</label>
                     <div class="reg-settings">
@@ -39,8 +39,11 @@
                     </div>
                 </div>
                    
-                <div id="named-groups-container">
+                <div class="regex-named-groups">
+                    <h2>Extracted :</h2>
+                    <div id="named-groups-container">
 
+                    </div>
                 </div>
                 <!-- <div>    
                     <label class="label-left" for="tb_named_group_1">Named Group 1:</label>
@@ -50,6 +53,7 @@
                 </div> -->
 
                 <div class="regex-settings">
+                    <h2>Table Pattern :</h2>
                     <table id="tb_pattern" border="1">
                         <tr>
                             <th>Position</th>
@@ -62,8 +66,8 @@
                         <tr id="rw_new_row">
                             <td contenteditable="true" data-placeholder="Position"></td>
                             <td data-placeholder="Type">
-                                <label for="fruitSelect"></label>
-                                <select class="dark-theme-select" id="fruitSelect" name="fruits">
+                                <label for="typeSelect"></label>
+                                <select class="dark-theme-select" id="typeSelect" name="fruits">
                                     <option value="character">character</option>
                                     <option value="separator">separator</option>
                                     <option value="separator_utf8">separator_utf8</option>
