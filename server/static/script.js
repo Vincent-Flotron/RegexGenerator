@@ -37,23 +37,61 @@ function make_regex() {
     }
 
     // Send a POST request to the Python server with the pattern data
-    // fetch('http://127.0.0.1:5000/generate_regex', {
-    fetch('http://just4coding.pythonanywhere.com/generate_regex', {
+    var pattern_json = JSON.stringify(patterns);
+    // var addr_gen_regex = 'http://127.0.0.1:5000/generate_regex';
+    var addr_gen_regex = 'https://just4coding.pythonanywhere.com/generate_regex';
+
+
+    fetch(addr_gen_regex, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(patterns),
+        body: pattern_json,
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            // Log error details
+            out('\n  ' + 'Error Status:', response.status + '\n'
+                + '  ' + 'Error Status Text:', response.statusText + '\n'
+                + '  ' + 'Sent:', pattern_json + '\n'
+                + '  ' + 'Address:', addr_gen_regex + '\n')
+
+            // Return a rejected promise to trigger the catch block
+            return Promise.reject('Request failed');
+        }
+
+        return response.json();
+    })
     .then(data => {
         // Display generated regex in the tb_generated_regex
         document.getElementById('tb_generated_regex').value = data.generated_regex;
     })
     .catch(error => {
-        console.error('Error:', error);
+        // Log the catch block error
+        out('\n  ' + 'Catch Block Error:', error);
     });
 }
+
+
+function getFormattedTimestamp() {
+    const now = new Date();
+
+    // Get individual components of the timestamp
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+
+    // Construct the formatted timestamp
+    const formattedTimestamp = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
+
+    return formattedTimestamp;
+}
+
 
 function extract_values_from_rw_new_row(row) {
     var position = row.cells[0].innerText;
@@ -70,6 +108,7 @@ function extract_values_from_rw_new_row(row) {
             separator: separator,
             len: len};
 }
+
 
 function add_element() {
     // Get values from the new row
@@ -90,6 +129,7 @@ function add_element() {
     // Sort the table based on the 'position' column
     sortTable();
 }
+
 
 function clean_row(row) {
     row = document.getElementById('rw_new_row');
@@ -131,6 +171,7 @@ function addRowToTable(table, position, select, name, separator, len) {
     len_cell.textContent = len;
 }
 
+
 function make_combobox_types (activated_option = '') {
     var new_select = document.createElement("select");
     new_select.name = "type";
@@ -148,6 +189,7 @@ function make_combobox_types (activated_option = '') {
     return new_select
 }
 
+
 function remove_position() {
     var position_to_remove = document.getElementById('tb_pos_to_remove').value;
 
@@ -161,6 +203,7 @@ function remove_position() {
     }
 }
 
+
 function extract() {
     // Get the regex from tb_generated_regex
     var pattern = document.getElementById('tb_generated_regex').value;
@@ -171,14 +214,15 @@ function extract() {
     const regex = new RegExp(pattern);
     const matches = regex.exec(text);
 
-    if (matches) {
+    if ((matches !== null && matches !== undefined) && (matches.length !== 1 || matches[0] !== '')) {
         named_groups = extract_named_groups(matches);
         clean_named_groups_result();
         generate_named_groups_result(named_groups);
     } else {
-        console.log('No match found');
+        out('No match found');
     }
 }
+
 
 function extract_named_groups(matches) {
     const groups_names = Object.keys(matches.groups); // Get an array of named group names
@@ -192,15 +236,13 @@ function extract_named_groups(matches) {
     return named_groups;
 }
 
+
 function clean_named_groups_result() {
     // Get the div where generated code will be added
     var container_div = document.getElementById('named-groups-container');
     container_div.innerHTML = '';
 }
 
-function get_named_groups_from_regex() {
-
-}
 
 // Function to sort the table based on the 'position' column
 function sortTable() {
@@ -269,6 +311,22 @@ function generate_named_groups_result(named_groups) {
     }
 }
 
+// -- THEME -------------------------------------------------------------------------------//
+
+function out(...args) {
+    // Get the input field
+    var inputField = document.getElementById('consoleOutput');
+
+    // Append the message to the input field value
+    var errorMessage = getFormattedTimestamp() + ': ' + args.join(' ');
+    inputField.value += errorMessage + '\n';
+    console.log(errorMessage)
+
+    // Optionally, you can also scroll the textarea to see the latest messages
+    inputField.scrollTop = inputField.scrollHeight;
+}
+
+
 function get_theme() {
     // get the actual theme
     var bt_theme_toggle = document.getElementById('theme_toggle');
@@ -283,6 +341,7 @@ function get_theme() {
     return theme_class;
 }
 
+
 function update_theme(dom_element, theme) {
     // Find the first class of the element that ends with '-theme'
     var currentThemeClass = Array.from(dom_element.classList).find(function(className) {
@@ -293,13 +352,14 @@ function update_theme(dom_element, theme) {
         // Replace the current theme class with the new theme
         dom_element.classList.remove(currentThemeClass);
         dom_element.classList.add(theme);
-        console.log('Theme updated from', currentThemeClass, 'to', theme);
+        // console.log('Theme updated from', currentThemeClass, 'to', theme);
     } else {
         // If no class ending with '-theme' was found, simply add the new theme
         dom_element.classList.add(theme);
-        console.log('No theme class found. Added', theme);
+        // console.log('No theme class found. Added', theme);
     }
 }
+
 
 function toggle(theme) {
     if(theme === 'dark-theme'){
@@ -307,6 +367,7 @@ function toggle(theme) {
     }
         return 'dark-theme'; 
 }
+
 
 function toggle_dark_theme() {
     const body = document.body;
@@ -325,32 +386,84 @@ function toggle_dark_theme() {
     // set text boxes dark-theme
     set_elements_theme('textarea', new_theme);
     set_elements_theme('input', new_theme);
-
-    // var textboxes = document.getElementsByClassName('textbox');
-    // for( var i = 0; i < textboxes.length; i++ ){
-    //     update_theme(textboxes[i], new_theme);
-    // }
     
     // Set selects theme
     set_elements_theme('select', new_theme);
-    // var selects = document.getElementsByTagName('select');
-    // for( var i = 0; i < selects.length; i++ ){
-    //     update_theme(selects[i], new_theme);
-    // }
 
     // Set buttons theme
     set_elements_theme('button', new_theme);
-    // var buttons = document.getElementsByTagName('button');
-    // for( var i = 0; i < buttons.length; i++ ){
-    //     update_theme(buttons[i], new_theme);
-    // }
 }
+
 
 function set_elements_theme(element_type, theme) {
     var elem = document.getElementsByTagName(element_type);
     for( var i = 0; i < elem.length; i++ ){
         update_theme(elem[i], theme);
     }
+}
+
+
+function redirect_log() {
+    // Store the original console functions
+    var originalLog = console.log;
+    var originalDebug = console.debug;
+    var originalInfo = console.info;
+    var originalWarn = console.warn;
+    var originalError = console.error;
+
+    function get_info(arg) {
+        var supp = '';
+        if(arguments.length > 1) {
+            supp = arguments[1];
+        }
+        if(supp.message !== undefined){
+            supp = arguments[1].message;
+        }
+        return supp;
+    }
+    // Override console functions to capture messages
+    console.log = function(message) {
+        updateInputField('LOG: ' + message + ', ' + get_info(arguments));
+        originalLog.apply(console, arguments);
+    };
+
+    console.debug = function(message) {
+        updateInputField('DEBUG: ' + message + ', ' + get_info(arguments));
+        originalDebug.apply(console, arguments);
+    };
+
+    console.info = function(message) {
+        updateInputField('INFO: ' + message + ', ' + get_info(arguments));
+        originalInfo.apply(console, arguments);
+    };
+
+    console.warn = function(message) {
+        updateInputField('WARN: ' + message + ', ' + get_info(arguments));
+        originalWarn.apply(console, arguments);
+    };
+
+    console.error = function(message) {
+        updateInputField('ERROR: ' + message + ', ' + get_info(arguments));
+        originalError.apply(console, arguments);
+    };
+
+    function updateInputField(message) {
+        // Get the input field
+        var inputField = document.getElementById('consoleOutput');
+
+        // Append the message to the input field value
+        inputField.value += message + '\n';
+
+        // Optionally, you can also scroll the textarea to see the latest messages
+        inputField.scrollTop = inputField.scrollHeight;
+    }
+
+    // Example usage
+    console.log('This is a log message.');
+    console.debug('This is a debug message.');
+    console.info('This is an info message.');
+    console.warn('This is a warning message.');
+    console.error('This is an error message.');
 }
 
 function init_theme_toggle () {

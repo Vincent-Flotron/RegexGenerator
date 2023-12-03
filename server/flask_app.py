@@ -29,4 +29,11 @@ def generate_regex():
     generated_regex = gen_regex(data)
 
     response_data = {'generated_regex': generated_regex}
-    return jsonify(response_data)
+
+    # Set CORS headers for production
+    allowed_origin = 'https://just4coding.pythonanywhere.com'
+    response = jsonify(response_data)
+    response.headers.add('Access-Control-Allow-Origin', allowed_origin)
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+
+    return response
