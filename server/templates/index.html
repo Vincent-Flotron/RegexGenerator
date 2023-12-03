@@ -12,7 +12,7 @@
 <body class="dark-theme">
     <header>
         <h1>Apps</h1>
-        <button id="themeToggle">Toggle Theme</button>
+        <button id="theme_toggle" class="dark-theme">Toggle Theme</button>
     </header>
 
     <main>
@@ -22,7 +22,7 @@
                 <div>
                     <label class="label-left" for="tb_text">Text:</label>
                     <div class="reg-settings">
-                        <textarea class="textbox dark-theme-textboxes" type="text" id="tb_text" name="tb_text" cols="40" rows="2"></textarea>
+                        <textarea class="textbox dark-theme" type="text" id="tb_text" name="tb_text" cols="40" rows="2"></textarea>
                         <div class="cont-but">
                             <button class="dark-theme" onclick="extract()">Extract</button>
                         </div>
@@ -32,7 +32,7 @@
                 <div>
                     <label class="label-left" for="tb_generated_regex">Generated Regex:</label>
                     <div class="reg-settings">
-                        <input class="textbox dark-theme-textboxes" type="text" id="tb_generated_regex" name="tb_generated_regex">
+                        <input class="textbox dark-theme" type="text" id="tb_generated_regex" name="tb_generated_regex">
                         <div class="cont-but">
                             <button class="dark-theme" onclick="make_regex()">Generate Regex</button>
                         </div>
@@ -48,7 +48,7 @@
                 <!-- <div>    
                     <label class="label-left" for="tb_named_group_1">Named Group 1:</label>
                     <div class="reg-settings">
-                        <input class="textbox dark-theme-textboxes" type="text" id="tb_named_group_1" name="tb_named_group_1" readonly>
+                        <input class="textbox dark-theme" type="text" id="tb_named_group_1" name="tb_named_group_1" readonly>
                     </div>
                 </div> -->
 
@@ -67,7 +67,7 @@
                             <td contenteditable="true" data-placeholder="Position"></td>
                             <td data-placeholder="Type">
                                 <label for="typeSelect"></label>
-                                <select class="dark-theme-select" id="typeSelect" name="fruits">
+                                <select class="dark-theme" id="typeSelect" name="fruits">
                                     <option value="character">character</option>
                                     <option value="separator">separator</option>
                                     <option value="separator_utf8">separator_utf8</option>
@@ -88,7 +88,7 @@
                         <label class="initial label-left" for="tb_pos_to_remove">Position to Remove:</label>
                         <div class="reg-settings">
                             <div class="reg-settings flex-container" id="pos-to-remove">
-                                <input  class="initial textbox dark-theme-textboxes" type="text" id="tb_pos_to_remove" name="tb_pos_to_remove">
+                                <input  class="initial textbox dark-theme" type="text" id="tb_pos_to_remove" name="tb_pos_to_remove">
                                 <div class="cont-but">
                                     <button class="auto dark-theme" onclick="remove_position()">Remove Position</button>
                                 </div>

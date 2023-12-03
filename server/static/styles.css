@@ -129,12 +129,12 @@ footer p {
     color: #fff;
 }
 
-.dark-theme-textboxes {
+input .dark-theme {
     background-color: #333333;
     color: #fff;
 }
 
-.dark-theme-select {
+select .dark-theme {
     background-color: #222222;
     border-radius: 0%;
     border: unset;

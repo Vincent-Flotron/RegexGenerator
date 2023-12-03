@@ -247,9 +247,11 @@ function generate_named_groups_result(named_groups) {
         var inner_div = document.createElement('div');
         inner_div.className = 'reg-settings';
 
+        var theme = get_theme();
+
         // Create input element
         var input = document.createElement('input');
-        input.className = 'textbox dark-theme-textboxes';
+        input.className = 'textbox ' + theme;
         input.type = 'text';
         input.id = named_groups[i].name;
         input.name = named_groups[i].name;
@@ -266,34 +268,96 @@ function generate_named_groups_result(named_groups) {
     }
 }
 
-// Function to toggle the theme
-document.addEventListener('DOMContentLoaded', function () {
-    const theme_toggle = document.getElementById('theme_toggle');
+function get_theme() {
+    // get the actual theme
+    var bt_theme_toggle = document.getElementById('theme_toggle');
+
+    // Find the first class of the element that ends with '-theme'
+    var theme_class = Array.from(bt_theme_toggle.classList).find(function(class_name) {
+        return class_name.endsWith('-theme');
+    });
+    if(theme_class === undefined) {
+        theme_class = 'light-theme';
+    }
+    return theme_class;
+}
+
+function update_theme(dom_element, theme) {
+    // Find the first class of the element that ends with '-theme'
+    var currentThemeClass = Array.from(dom_element.classList).find(function(className) {
+        return className.endsWith('-theme');
+    });
+
+    if (currentThemeClass) {
+        // Replace the current theme class with the new theme
+        dom_element.classList.remove(currentThemeClass);
+        dom_element.classList.add(theme);
+        console.log('Theme updated from', currentThemeClass, 'to', theme);
+    } else {
+        // If no class ending with '-theme' was found, simply add the new theme
+        dom_element.classList.add(theme);
+        console.log('No theme class found. Added', theme);
+    }
+}
+
+function toggle(theme) {
+    if(theme === 'dark-theme'){
+        return 'light-theme';
+    }
+        return 'dark-theme'; 
+}
+
+function toggle_dark_theme() {
     const body = document.body;
 
-    // generate_named_groups_result(['grp1', 'grp2']);
+    const bt_toggle_theme = document.getElementById('theme_toggle');
+    const theme = get_theme();
 
-    theme_toggle.addEventListener('click', function () {
-        // set general dark-theme
-        body.classList.toggle('dark-theme');
-        
-        // set text boxes dark-theme
-        var textboxes = document.getElementsByClassName('textbox');
-        for( var i = 0; i < textboxes.length; i++ ){
-            textboxes[i].classList.toggle('dark-theme-textboxes');
-        }
-        
-        // set selects dark-theme
-        var selects = document.getElementsByTagName('select');
-        for( var i = 0; i < selects.length; i++ ){
-            selects[i].classList.toggle('dark-theme-select');
-        }
+    const new_theme = toggle(theme);
 
-        // set buttons dark-theme
-        var buttons = document.getElementsByTagName('button');
-        for( var i = 0; i < buttons.length; i++ ){
-            buttons[i].classList.toggle('dark-theme');
-        }
+    // Set theme of the toggle theme button
+    update_theme(bt_toggle_theme, new_theme);
 
-    });
+    // set general dark-theme
+    update_theme(body, new_theme);
+    
+    // set text boxes dark-theme
+    set_elements_theme('textarea', new_theme);
+    set_elements_theme('input', new_theme);
+
+    // var textboxes = document.getElementsByClassName('textbox');
+    // for( var i = 0; i < textboxes.length; i++ ){
+    //     update_theme(textboxes[i], new_theme);
+    // }
+    
+    // Set selects theme
+    set_elements_theme('select', new_theme);
+    // var selects = document.getElementsByTagName('select');
+    // for( var i = 0; i < selects.length; i++ ){
+    //     update_theme(selects[i], new_theme);
+    // }
+
+    // Set buttons theme
+    set_elements_theme('button', new_theme);
+    // var buttons = document.getElementsByTagName('button');
+    // for( var i = 0; i < buttons.length; i++ ){
+    //     update_theme(buttons[i], new_theme);
+    // }
+}
+
+function set_elements_theme(element_type, theme) {
+    var elem = document.getElementsByTagName(element_type);
+    for( var i = 0; i < elem.length; i++ ){
+        update_theme(elem[i], theme);
+    }
+}
+
+function init_theme_toggle () {
+    const theme_toggle = document.getElementById('theme_toggle');
+    theme_toggle.addEventListener('click', toggle_dark_theme);
+}
+
+// Function to toggle the theme
+document.addEventListener('DOMContentLoaded', function() {
+    init_theme_toggle();
 });

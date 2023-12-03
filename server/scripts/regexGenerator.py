@@ -73,20 +73,62 @@ class Field(Element):
 
 
 class RegexGenerator:
-  def __init__(self, elements, regex_interpreter='perl'):
+  def __init__(self, json_data, regex_interpreter='perl'):
+    if(not RegexGenerator.validate_json(str(json_data))):
+       return 'Not valid data received.'
+    
+    data_list = json_data
+    elements_len = len(data_list)
+    elements = [''] * elements_len
+
+    for i, item in zip(range(0, elements_len), data_list):
+        data_type = item['type']
+        name = item['name']
+        separator = item['separator']
+        if item['len'] != '':
+            if item['len'] == '':
+              item['len'] = '0'
+            length = int(item['len'])
+        else:
+            length = 0
+
+        if data_type == 'separator':
+            elements[i] = Separator(name, separator)
+        elif data_type == 'separator_ascii':
+            elements[i] = SeparatorASCII(name, separator)
+        elif data_type == 'character':
+            elements[i] = Field(name, FieldType('character'), length)
+
     if type(elements) != list and type(elements) != tuple:
-      print(f'type(elements): {type(elements)}')
-      print(f'list: {list}')
-      print(f'tuple: {tuple}')
+      # print(f'type(elements): {type(elements)}')
+      # print(f'list: {list}')
+      # print(f'tuple: {tuple}')
       raise Exception(f'{elements} is not of type list or tuple !')
     self.elements = elements
     self.extracted_elements = {}
     self.regex_interpreter = regex_interpreter
+
   
   def __del__(self):
     Separator.numbers_sep = 0
     SeparatorASCII.numbers_sep = 0
 
+  def validate_json(json_to_check):
+    pattern = '\[?\{(\'|\")position(\'|\"): +(\'|\")\w{1,4}(\'|\"), +(\'|\")type(\'|\"): +(\'|\")(character|separator|separator_utf8)(\'|\"), +(\'|\")name(\'|\"): +(\'|")[\w_]{0,30}(\'|"), +(\'|\")separator(\'|\"): +(\'|\").{0,20}(\'|\"), +(\'|\")len(\'|\"): +(\'|\")\d{0,6}(\'|\")\}(\]|, {0,5})?'
+    matches = re.finditer(pattern, json_to_check)
+    last_end_pos = 0
+    for m in matches:
+        # print(f'matches : {m.group(0)}')
+        # print(f'last: {last_end_pos}, strt: {m.start()}')
+        if(last_end_pos != m.start()):
+            return False
+        last_end_pos = m.end()
+    # print(f'{len(json_to_check)}/{last_end_pos}')
+    if(len(json_to_check) != last_end_pos):
+        return False
+    
+    # Return True if at least one match is found
+    return bool(m)
 
   def extract(self, cpcBarcode):
     oMatch = re.search(self.cPattern, cpcBarcode)
@@ -171,7 +213,7 @@ if __name__ == '__main__':
   regex_generated = rg.gen_regex()
   extracted = rg.extract(test)
 
-  print(extracted)
-  print(extracted['sep1'])
+  # print(extracted)
+  # print(extracted['sep1'])
 
-  print(regex_generated)
+  # print(regex_generated)
